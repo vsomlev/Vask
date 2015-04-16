@@ -1,4 +1,5 @@
-function Vask(){
+// Task execution class
+Vasker = function(){
 
 	var tasks = [];
 	var final_collect = null;
@@ -8,8 +9,9 @@ function Vask(){
 
 	// #### SEQUENTIAL
 	
+	// Called by each sequential task after it's finished.
 	var seq_callback = function(res){
-		console.log('SEQ CALLBACK ' + res);
+		// console.log('SEQ CALLBACK ' + res);
 		results[seq_pointer] = res;
 		seq_pointer++;
 
@@ -25,20 +27,21 @@ function Vask(){
 		tasks = tasks_list;
 		final_collect = final_collect_func;
 		results = new Array(tasks_list.length);
-		// TODO: length checks everywhere, starting here
-		var t1 = tasks_list[0];
-		t1.exec(seq_callback);
+
+		var first_task = tasks_list[0];
+		first_task.exec(seq_callback);
 	};
 	
 	// #### PARALLEL
 
+	// Called by each parallel task when it's finished.
 	var parallel_callback = function(task_index){
 		var parallel_callback_internal = function(res){
-			console.log('PAR CALLBACK [' + task_index + '] ' + res);
+			// console.log('PARALLEL CALLBACK [' + task_index + '] ' + res);
 			results[task_index] = res;
 			par_finished++;
 
-			if(par_finished == tasks.length) {
+			if(par_finished == tasks.length){
 				final_collect(results);
 			}
 		};
@@ -49,35 +52,40 @@ function Vask(){
 		tasks = tasks_list;
 		final_collect = final_collect_func;
 		results = new Array(tasks_list.length);
-		// TODO: length checks everywhere, starting here
+
 		for(var i=0; i<tasks_list.length; i++){
-			var t = tasks_list[i];
-			t.exec(parallel_callback(i));
+			var task = tasks_list[i];
+			task.exec(parallel_callback(i));
 		}
 	};
 
-
-	// Task class
-	this.Task = function(func, params, post_proc_func){
-		this.func = func;
-		this.params = params;
-		this.post_proc = post_proc_func ||  function(x){ return x;};
-
-		// before calling the externally supplied callback, run the post-processing function
-		this.internal_callback_closure = function(i_external_callback, i_post_proc){
-			var internal_callback = function(res){
-				console.log('INTERNAL_CALLBACK ' + res);
-				var post_res = i_post_proc(res);
-				i_external_callback(post_res);
-			};
-			return internal_callback;
-		};
-
-		this.exec = function(callback){
-			console.log('---------------------');
-			console.log('EXEC');
-			internal_callback = this.internal_callback_closure(callback, this.post_proc);
-			func(params, internal_callback);
-		};
-	};
 };
+
+// Task class
+Vask = function(func, params, post_proc_func){
+    this.func = func;
+    this.params = params || {};
+    this.post_proc = post_proc_func || function(x){ return x;};
+	// case when 'params' is left out and the 2nd argument is actually the post-processing function.
+    if(typeof params == 'function'){
+    	this.params = {};
+    	this.post_proc = params;
+    }
+
+    // before calling the externally supplied callback, run the post-processing function
+    this.internal_callback_closure = function(i_external_callback, i_post_proc){
+        var internal_callback = function(res){
+            // console.log('INTERNAL_CALLBACK ' + res);
+            var post_res = i_post_proc(res);
+            i_external_callback(post_res);
+        };
+        return internal_callback;
+    };
+
+    this.exec = function(callback){
+        console.log('-----------EXEC----------');
+        internal_callback = this.internal_callback_closure(callback, this.post_proc);
+        this.func(this.params, internal_callback);
+    };
+};
+
