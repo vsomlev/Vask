@@ -20,7 +20,7 @@ The optional third parameter 'post_processing_func' is a function that allows yo
     // (1)
     var task_runner = new Vasker();
 
-	// (2)
+    // (2)
     var task1 = new Vask(async_func1);
     var task2 = new Vask(async_func2, {'user':'Peter'});
     var task3 = new Vask(async_func3, {'timeout':3000}, func1_post_processing);
@@ -28,14 +28,14 @@ The optional third parameter 'post_processing_func' is a function that allows yo
     // (3)
     // in sequence
     task_runner.sequence(
-	    [task1, task2, task3],
-	    result_callback
+        [task1, task2, task3],
+        result_callback
     );
 
     // in parallel
     task_runner.parallel(
-	    [task1, task2, task3],
-	    result_callback
+        [task1, task2, task3],
+        result_callback
     );
 
 For a more complete example see vasker_example.js
