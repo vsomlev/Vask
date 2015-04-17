@@ -6,7 +6,7 @@ Each function is enclosed in a separate Vask.
 
 	    var task = new Vask(async_func, {'some_param':'foo'}, post_processing_func);
 	    
-You can also pass some parameters to the function by putting them in the dict. The data returned by the function can optionally be process by the supplied function before being stored - the post-processing function should have a single parameter and return a value.  
+You can also pass some parameters to the function by putting them in the dict. The data returned by the function can optionally be processed by a supplied function before being stored - the post-processing function should have a single parameter and should return a value.  
 Both the parameters dict and the post-processing function are optional.  
 The async function **must** have the following signature:  
 
