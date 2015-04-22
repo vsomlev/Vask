@@ -18,16 +18,13 @@ function vask_example(){
     var v = new Vasker();
 
     var t1 = new Vask(delayed, {'timeout':1000}, delayed_postproc);
-    var t2 = new Vask(delayed);
+    var t2 = new Vask(delayed, delayed_postproc);
     var t3 = new Vask(delayed, delayed_postproc);
-    var t4 = new Vask(delayed, {'timeout':3000});
+    var t4 = new Vask(delayed, {'timeout':3000}, delayed_postproc);
 
-    v.sequence(
-		[t1, t2, t3, t4],
+    //v.sequence(
+    v.parallel(
+		[t3, t1, t2, t4],
 		final_collect
 	);
-    // v.parallel(
-		// [t1, t2, t3, t4],
-		// final_collect
-	// );
 };

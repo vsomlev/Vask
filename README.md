@@ -1,5 +1,6 @@
 # Vask
 Execute async JS functions in parallel/sequence. 
+Much like Async.js, but much dumber, less functional, and largely badly written.
 
 # Basics
 Each function is enclosed in a separate Vask. 
