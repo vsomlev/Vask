@@ -1,17 +1,17 @@
 function delayed(params, callback){
-	var timeout = params['timeout'] || 2000;
-	console.log('Setting up timeout ' + timeout);
-	window.setTimeout(callback, timeout, 'TIMEOUT_PARAM_'+timeout);
+    var timeout = params['timeout'] || 2000;
+    console.log('Setting up timeout ' + timeout);
+    window.setTimeout(callback, timeout, 'TIMEOUT_PARAM_'+timeout);
 };
 
 function delayed_postproc(res){
-	console.log('DELAYED_POSTPROC ' + res);
-	return res;
+    console.log('DELAYED_POSTPROC ' + res);
+    return res;
 };
 
 function final_collect(res){
-	console.log('---------------------');
-	console.log('FINAL COLLECT ' + res);
+    console.log('---------------------');
+    console.log('FINAL COLLECT ' + res);
 };
 
 function vask_example(){
@@ -24,7 +24,7 @@ function vask_example(){
 
     //v.sequence(
     v.parallel(
-		[t3, t1, t2, t4],
-		final_collect
-	);
+        [t3, t1, t2, t4],
+        final_collect
+    );
 };
